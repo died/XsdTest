@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			This Schema defines adidas PO Confirmation Message
+			Version Number: 1.0
+			Date of creation: 1 Aug 2018
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:include schemaLocation="CommonDataTypesv1_0.xsd"/>
+	<xsd:element name="POResponseAndAmendment" type="POResponseAndAmendmentType"/>
+	
+	<xsd:complexType name="buyerType">
+		<xsd:sequence>
+			<xsd:element name="buyerName" type="string255" />
+			<xsd:element name="buyerAddressLine1" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine2" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine3" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine4" type="string255" />
+			<xsd:element minOccurs="0" name="buyerCity" type="string255" />
+			<xsd:element minOccurs="0" name="buyerProvince" type="string255" />
+			<xsd:element name="buyerCountryCode" type="countryCodeEnumeration" />
+			<xsd:element minOccurs="0" name="buyerPostalCode" type="string9" />
+			<xsd:element minOccurs="0" name="buyerContactPerson" type="string50"/>
+			<xsd:element minOccurs="0" name="buyerContactTelNumber" type="string50"/>
+			<xsd:element minOccurs="0" name="buyerContactEmail" type="string100"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="POResponseAndAmendmentType">
+				<xsd:sequence>
+					<xsd:element name="POResponsePurpose" type="POResponsePurposeEnumeration"/>
+					<xsd:element name="PONumber" type="string50"/>
+					<xsd:element name="POVersionNumber" type="nonNegativeInteger10"/>
+					<xsd:element name="POResponseVersionNumber" type="nonNegativeInteger10"/>
+					<xsd:element name="messageGenerationDateTime" type="xsd:dateTime"/>
+					<xsd:element name="latestUpdateDateTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="headerRemarks" type="string350"/>
+					<xsd:element name="sender" type="senderType"/>
+					<xsd:element name="recipient" type="string255"/>
+					<xsd:element name="buyer" type="buyerType"/>
+					<xsd:element name="sellerName" type="string255"/>
+					<xsd:element maxOccurs="3000" name="POLineItem" type="POLineItemType"/>
+				</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="POLineItemType">
+		<xsd:sequence>
+			<xsd:element name="lineItemNumber" type="xsd:positiveInteger"/>
+			<xsd:element name="requestDate" type="xsd:date"/>
+			<xsd:element minOccurs="0" name="lineRemarks" type="string350"/>
+			<xsd:element name="materialReferenceNumber" type="string100"/>
+			<xsd:element name="confirmedDeliveryDate" type="xsd:date"/>
+			<xsd:element name="confirmedDeliveryQty" type="float3"/>
+			<xsd:element minOccurs="0" name="updatedDeliveryDate" type="xsd:date"/>
+			<xsd:element minOccurs="0" name="updatedDeliveryQty" type="float3"/>
+			<xsd:element minOccurs="0" name="lastShipmentConfirmedDeliveryDate" type="xsd:date"/>
+			<xsd:element minOccurs="0" name="lastShipmentConfirmedDeliveryQty" type="float3"/>
+			<xsd:element minOccurs="0" name="lastShipmentUpdatedDeliveryDate" type="xsd:date"/>
+			<xsd:element minOccurs="0" name="lastShipmentUpdatedDeliveryQty" type="float3"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="senderType">
+		<xsd:sequence>
+			<xsd:element name="senderName" type="string255" />
+			<xsd:element name="senderPerson" type="string255" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			This Schema defines adidas PurchaseOrder Message
+			Version Number: 1.0
+			Date of creation: 1 Aug 2018
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:include schemaLocation="CommonDataTypesv1_0.xsd"/>
+	<xsd:element name="PurchaseOrder" type="PurchaseOrderType"/>
+	
+	<xsd:complexType name="actualManufacturerType">
+		<xsd:sequence>
+			<xsd:element name="actualManufacturerCode" type="string6"/>
+			<xsd:element name="actualManufacturerName" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerAddressLine1" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerAddressLine2" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerAddressLine3" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerAddressLine4" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerCity" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerProvince" type="string255" />
+			<xsd:element minOccurs="0" name="actualManufacturerCountryCode" type="countryCodeEnumeration" />
+			<xsd:element minOccurs="0" name="actualManufacturerPostalCode" type="string9" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="buyerType">
+		<xsd:sequence>
+			<xsd:element name="buyerName" type="string255" />
+			<xsd:element name="buyerAddressLine1" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine2" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine3" type="string255" />
+			<xsd:element minOccurs="0" name="buyerAddressLine4" type="string255" />
+			<xsd:element minOccurs="0" name="buyerCity" type="string255" />
+			<xsd:element minOccurs="0" name="buyerProvince" type="string255" />
+			<xsd:element name="buyerCountryCode" type="countryCodeEnumeration" />
+			<xsd:element minOccurs="0" name="buyerPostalCode" type="string9" />
+			<xsd:element minOccurs="0" name="buyerContactPerson" type="string50"/>
+			<xsd:element minOccurs="0" name="buyerContactTelNumber" type="string50"/>
+			<xsd:element minOccurs="0" name="buyerContactEmail" type="string100"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="materialDescriptorType">
+		<xsd:sequence>
+			<xsd:element name="materialDescription" type="string200"/>
+			<xsd:element name="materialColor" type="string350"/>
+			<xsd:element maxOccurs="unbounded" name="sustainableMaterialComposition" type="sustainableMaterialCompositionEnumeration"/>
+			<xsd:element minOccurs="0" name="colorMatchingNote" type="string350"/>
+			<xsd:element minOccurs="0" name="materialSectionName" type="string100"/>
+			<xsd:element minOccurs="0" name="weightValue"  type="float3"/>
+			<xsd:element minOccurs="0" name="weightUOM" type="weightUOMEnumeration"/>
+			<xsd:element minOccurs="0" name="widthValue" type="float3"/>
+			<xsd:element minOccurs="0" name="widthUOM" type="widthUOMEnumeration"/>
+			<xsd:element minOccurs="0" name="thicknessValue"  type="float3"/>
+			<xsd:element minOccurs="0" name="thicknessUOM" type="thicknessUOMEnumeration"/>
+			<xsd:element minOccurs="0" name="lengthValue" type="float3"/>
+			<xsd:element minOccurs="0" name="lengthUOM" type="lengthUOMEnumeration"/>
+			<xsd:element minOccurs="0" name="heightValue" type="float3"/>
+			<xsd:element minOccurs="0" name="heightUOM" type="heightUOMEnumeration"/>
+			<xsd:element minOccurs="0" name="size" type="string255"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PurchaseOrderType">
+				<xsd:sequence>
+					<xsd:element name="POPurpose" type="POPurposeEnumeration"/>
+					<xsd:element name="PONumber" type="string50"/>
+					<xsd:element name="POVersionNumber" type="nonNegativeInteger10"/>
+					<xsd:element name="POResponseVersionNumber" type="nonNegativeInteger10"/>
+					<xsd:element name="messageGenerationDateTime" type="xsd:dateTime"/>
+					<xsd:element name="latestUpdateDateTime" type="xsd:dateTime"/>
+					<xsd:element name="originalPOIssueDate" type="xsd:date"/>
+					<xsd:element minOccurs="0" name="adidasPODownloadDate" type="xsd:date"/>
+					<xsd:element minOccurs="0" name="currency" type="currencyCodeEnumeration"/>
+					<xsd:element minOccurs="0" name="paymentTerms" type="string255"/>
+					<xsd:element minOccurs="0" name="headerRemarks" type="string350"/>
+					<xsd:element name="sender" type="senderType"/>
+					<xsd:element name="recipient" type="string255"/>
+					<xsd:element name="buyer" type="buyerType"/>
+					<xsd:element name="sellerName" type="string255"/>
+					<xsd:element name="actualManufacturer" type="actualManufacturerType"/>
+					<xsd:element name="shipTo" type="shipToType"/>
+					<xsd:element minOccurs="0" name="T1Customer" type="string30"/>
+					<xsd:element name="ShippingInformation" type="ShippingInformationType"/>
+					<xsd:element minOccurs="0" name="headerExtension" type="string350"/>
+					<xsd:element maxOccurs="3000" name="POLineItem" type="POLineItemType"/>
+				</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="POLineItemType">
+		<xsd:sequence>
+				<xsd:element name="lineItemNumber" type="positiveInteger10"/>
+				<xsd:element name="changePurposeLineStatus" type="changePurposeLineStatusEnumeration"/>
+				<xsd:element minOccurs="0" name="adidasOrderNumber" type="string255"/>
+				<xsd:element minOccurs="0" name="adidasArticleNumber" type="string255"/>
+				<xsd:element minOccurs="0" name="adidasWorkingNumber" type="string255"/>
+				<xsd:element name="requestDate" type="xsd:date"/>
+				<xsd:element minOccurs="0" name="adidasRequestDate" type="xsd:date"/>
+				<xsd:element minOccurs="0" name="adidasPlanDate" type="xsd:date"/>
+				<xsd:element name="priorityAndOrderType" type="priorityAndOrderTypeEnumeration"/>
+				<xsd:element name="orderQty" type="float3"/>
+				<xsd:element name="orderUOM" type="orderUOMEnumeration"/>
+				<xsd:element name="season" type="string100"/>
+				<xsd:element minOccurs="0" name="lineRemarks" type="string350"/>
+				<xsd:element name="materialReferenceNumber" type="string100"/>
+				<xsd:element name="materialDescriptor" type="materialDescriptorType"/>
+				<xsd:element minOccurs="0"  name="unitPrice" type="float3"/>
+				<xsd:element minOccurs="0" name="lineExtension1" type="string350"/>
+				<xsd:element minOccurs="0" name="lineExtension2" type="string350"/>
+				<xsd:element minOccurs="0" name="lineExtension3" type="string350"/>
+				<xsd:element minOccurs="0" name="lineExtension4" type="string350"/>
+				<xsd:element minOccurs="0" name="lineExtension5" type="string350"/>
+			</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="senderType">
+		<xsd:sequence>
+			<xsd:element name="senderName" type="string255" />
+			<xsd:element name="senderPerson" type="string255" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ShippingInformationType">
+		<xsd:sequence>
+			<xsd:element name="forwarder" type="string175"/>
+			<xsd:element name="incoterm" type="incotermCodeEnumeration" />
+			<xsd:element name="shipMode" type="string100" />
+			<xsd:element name="countryOfOrigin" type="countryCodeEnumeration" />
+			<xsd:element minOccurs="0" name="packingInstruction" type="string350" />
+			<xsd:element minOccurs="0" name="shippingInstruction" type="string350" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="shipToType">
+		<xsd:sequence>
+			<xsd:element name="shipToCode" type="string6"/>
+			<xsd:element name="shipToName" type="string255" />
+			<xsd:element name="shipToAddressLine1" type="string255" />
+			<xsd:element minOccurs="0" name="shipToAddressLine2" type="string255" />
+			<xsd:element minOccurs="0" name="shipToAddressLine3" type="string255" />
+			<xsd:element minOccurs="0" name="shipToAddressLine4" type="string255" />
+			<xsd:element minOccurs="0" name="shipToCity" type="string255" />
+			<xsd:element minOccurs="0" name="shipToProvince" type="string255" />
+			<xsd:element name="shipToCountryCode" type="countryCodeEnumeration" />
+			<xsd:element minOccurs="0" name="shipToPostalCode" type="string9" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>
