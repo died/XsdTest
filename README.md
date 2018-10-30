@@ -10,3 +10,5 @@ Convert XML to Object.
 Convert Object/Model to XML string.
 - **XmlValidate**   
 Using xsd file to vaildate XML format.
+- **GetMd5String**   
+Get MD5 hash from a string
