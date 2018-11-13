@@ -101,7 +101,7 @@ namespace XsdTest
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                //Console.WriteLine(e.Message);
                 message = e.Message;
                 result = false;
             }

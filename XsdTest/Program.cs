@@ -8,13 +8,16 @@ namespace XsdTest
     class Program
     {
         private static readonly string Path = "..\\..\\Xsd\\";
-        static void Main()
+        static void Main(string[] args)
         {
-            var rd = XmlReader.Create("input.xml");
+            
+            var fileName = args.Any()? args.First(): "input.xml";
+            var rd = XmlReader.Create(fileName);
             var doc = XDocument.Load(rd);
 
             // Get MD5 hash
             var md5Hash = Tools.GetMd5String(doc.ToString());
+            Console.WriteLine($"Validating:\t{fileName}");
             Console.WriteLine($"MD5 hash:\t{md5Hash}");
 
             var success = Tools.XmlValidate(doc, Enumeration.PurposeType.Creation, Path, out string msg);
