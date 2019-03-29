@@ -1,5 +1,16 @@
 # Xsd Test
 #### Just a tiny project for test adidas template XSD file validate.
+ 
+ 
+## V1.1 using guide
+```
+XsdTest.exe [XML FILE] [PURPOSE]
+```
+* [XML FILE] : Your XML File.
+* [PURPOSE] : adidas's XML purpose, **case sensitive**.  
+
+For example: `XsdTest.exe test.xml Confirmation`  
+  
 
 ## Methods Explanation
 - **XmlToGeneric**   

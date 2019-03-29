@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
@@ -141,7 +142,6 @@ namespace XsdTest
             }
             return schema;
         }
-        #endregion
 
         private static void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
@@ -154,7 +154,9 @@ namespace XsdTest
                     break;
             }
         }
+        #endregion
 
+        #region text
         /// <summary>
         /// Get MD5 hash from string
         /// </summary>
@@ -176,5 +178,39 @@ namespace XsdTest
                 throw;
             }
         }
+
+        /// <summary>
+        /// Get file's base64
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetBase64FromFile(string path)
+        {
+            try
+            {
+                var data = Encoding.UTF8.GetBytes(File.ReadAllText(path));
+                return Convert.ToBase64String(data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{MethodBase.GetCurrentMethod().ReflectedType}-{MethodBase.GetCurrentMethod().Name},msg:{ex.Message}");
+                return string.Empty;
+            }
+        }
+        #endregion
+
+        #region console
+        /// <summary>
+        /// Add color on console text
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <param name="color"></param>
+        public static void ColorText(string txt, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(txt);
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        #endregion
     }
 }

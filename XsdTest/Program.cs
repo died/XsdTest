@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -7,11 +8,19 @@ namespace XsdTest
 {
     class Program
     {
-        private static readonly string Path = "..\\..\\Xsd\\";
+        private const string Path = "..\\..\\Xsd\\";
+
         static void Main(string[] args)
         {
-            
-            var fileName = args.Any()? args.First(): "input.xml";
+            //Check args
+            if (args.Length>0 && args.Length != 2)
+            {
+                Help();
+                return;
+            }
+
+            var fileName = args.Any()? args[0]: "test.xml";
+            var typeName = args.Any() ? args[1] : "Confirmation";
             var rd = XmlReader.Create(fileName);
             var doc = XDocument.Load(rd);
 
@@ -20,15 +29,33 @@ namespace XsdTest
             Console.WriteLine($"Validating:\t{fileName}");
             Console.WriteLine($"MD5 hash:\t{md5Hash}");
 
-            var success = Tools.XmlValidate(doc, Enumeration.PurposeType.Creation, Path, out string msg);
+            //get purpose
+            var cultInfo = new CultureInfo("en-US", false).TextInfo;    //avoid case sensitive
+            if (!Enum.TryParse(cultInfo.ToTitleCase(typeName), out Enumeration.PurposeType purpose))
+            {
+                Console.WriteLine($"Can't convert {typeName} to Purpose");
+                Console.ReadLine();
+                return;
+            }
+
+            var success = Tools.XmlValidate(doc, purpose, Path, out var msg);
             if (success)
             {
-                var result = Tools.XmlToGeneric<PurchaseOrder>(doc);
-
-
-                Console.WriteLine($"PoPurpose:\t{result.PoPurpose}");
-                Console.WriteLine($"PoNumber:\t{result.PoNumber}");
-                Console.WriteLine($"First Item Qty:\t{result.PoLineItem.First().OrderQty}" );
+                Tools.ColorText("Validate Success", ConsoleColor.Green);
+                switch (purpose)
+                {
+                    case Enumeration.PurposeType.Creation:
+                        var purchaseOrder = Tools.XmlToGeneric<PurchaseOrder>(doc);
+                        Console.WriteLine(
+                            $"PoPurpose:\t{purchaseOrder.PoPurpose}\nPoNumber:\t{purchaseOrder.PoNumber}\nFirst Item Qty:\t{purchaseOrder.PoLineItem.First().OrderQty}");
+                        break;
+                    case Enumeration.PurposeType.Confirmation:
+                        var poConfirmation = Tools.XmlToGeneric<PoConfirmation>(doc);
+                        Console.WriteLine(
+                            $"PoPurpose:\t{poConfirmation.PoResponsePurpose}\nPoNumber:\t{poConfirmation.PoNumber}\nFirst Item ConfirmedDeliveryQty:\t{poConfirmation.PoLineItem.First().ConfirmedDeliveryQty}");
+                        break;
+                    //and so on
+                }
 
                 #region Print Model to XML result
                 //var str = ObjToXml(result);
@@ -38,7 +65,7 @@ namespace XsdTest
             }
             else
             {
-                Console.WriteLine($"Validate Fail:{msg}");   
+                Tools.ColorText($"Validate Fail:{msg}", ConsoleColor.Red);
             }
 
             #region If didn't convert to model, old way to get value
@@ -51,6 +78,16 @@ namespace XsdTest
             Console.ReadLine();
         }
 
-
+        private static void Help()
+        {
+            Tools.ColorText("XSD Validate Test Tool Guide\n",ConsoleColor.Yellow);
+            Console.WriteLine(
+                "XsdText.exe <File> <Purpose>\n\n" +
+                "<File>:\t\tThe file you want to test.\n"+
+                "<Purpose>:\tPurpose: Creation, Confirmation, T1Amendment, T1AmendmentConfirmation, T2Amendment,\n" +
+                "\t\tT2AmendmentAcknowledgement, Cancellation, CancellationConfirmation\n");
+            Console.WriteLine("Enter any key to exit...");
+            Console.ReadLine();
+        }
     }
 }
