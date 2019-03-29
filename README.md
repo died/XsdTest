@@ -10,7 +10,9 @@ XsdTest.exe [XML FILE] [PURPOSE]
 * [PURPOSE] : adidas's XML purpose, **case sensitive**.  
 
 For example: `XsdTest.exe test.xml Confirmation`  
-  
+
+### Purpose List  
+Creation, Confirmation, T1Amendment, T1AmendmentConfirmation, T2Amendment, T2AmendmentAcknowledgement, Cancellation, CancellationConfirmation
 
 ## Methods Explanation
 - **XmlToGeneric**   
